@@ -13,6 +13,8 @@ export class GameComponent {
   playerChoice: string | null = null;
   computerChoice: string | null = null;
   result: string | null = null;
+  playerScore = 0;
+  computerScore = 0;
 
   play(playerChoice: string): void {
     this.playerChoice = playerChoice;
@@ -24,20 +26,25 @@ export class GameComponent {
     const randomIndex = Math.floor(Math.random() * this.choices.length);
     return this.choices[randomIndex];
   }
-
+  
   determineWinner(): string {
     if (this.playerChoice === this.computerChoice) {
       return "It's a tie!";
     }
-
-    if (
-      (this.playerChoice === 'Rock' && this.computerChoice === 'Scissors') ||
-      (this.playerChoice === 'Paper' && this.computerChoice === 'Rock') ||
-      (this.playerChoice === 'Scissors' && this.computerChoice === 'Paper')
-    ) {
+  
+    const winConditions = {
+      Rock: 'Scissors',
+      Paper: 'Rock',
+      Scissors: 'Paper',
+    };
+  
+    if (winConditions[this.playerChoice as keyof typeof winConditions] === this.computerChoice) {
+      this.playerScore++;
       return 'You win!';
     } else {
+      this.computerScore++;
       return 'You lose!';
     }
   }
+  
 }
